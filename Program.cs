@@ -4,7 +4,7 @@ namespace BattleShip
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            
         }
     }
 }
