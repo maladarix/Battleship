@@ -1,4 +1,4 @@
-namespace BattleShip
+﻿namespace Battleship
 {
     internal class Program
     {
