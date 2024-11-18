@@ -31,13 +31,33 @@ namespace Battleship.src
 
         public static bool CheckBoatPlacementConflict(int x, int y, bool vertical, int boatLenght)
         {
-            for (int i = 0; i < 9; i++)
+            for (int i = (vertical ? y : x); i <= (vertical ? y : x) + boatLenght; i++)
             {
                 if (Game.PlayerBoard[vertical ? (x, i) : (i, y)] != ".")
                 {
                     Console.WriteLine("The ship is in conflit with another ship");
                     return false;
                 }
+            }
+            return true;
+        }
+
+        public static void PlaceRandomBoat()
+        {
+            for (int i = 0; i < Game.Boats.lenght; i++)
+            {
+                Random random = new Random();
+                int x = 0;
+                int y = 0;
+                bool vertical = false;
+                do
+                {
+                    x = random.Next(10);
+                    y = random.Next(10);
+                    vertical = random.Next(2) == 1 ? true : false;
+                }
+                while (CheckBoatPlacementInGrid(x, y, vertical, Game.Boats[i].lenght) && CheckBoatPlacementConflict(x, y, vertical, Game.Boats[i].lenght));
+                PlaceBoat(x, y, vertical, Game.Boats[i].lenght, true);
             }
         }
     }
