@@ -8,12 +8,17 @@ namespace Battleship.src
 {
     internal class boatLogic
     {
-        public static void PlaceBoat(int x, int y, bool vertical, int boatLenght, bool bot = false)
+        public static void PlaceBoat(int x, int y, bool vertical, int boatLenght, int boatNum, bool bot = false)
         {
+            var boats = bot ? Game.BotBoats : Game.PlayerBoats;
+            var board = bot ? Game.BotBoard : Game.PlayerBoard;
+
             for (int i = 0; i < boatLenght; i++)
             {
-                (bot == true ? Game.BotBoard : Game.PlayerBoard)[vertical ? (x, i) : (i, y)] = "S";
+                board[vertical ? (x, y + i) : (x + i, y)] = "S";
             }
+            boats[boatNum].FirstCoord = new[] {x, y};
+            boats[boatNum].LastCoord = new[] {vertical ? (x, y + boatLenght) : (x + boatLenght, y)};
         }
 
         public static bool CheckBoatPlacementInGrid(int x, int y, bool vertical, int boatLenght)
