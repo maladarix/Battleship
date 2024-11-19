@@ -1,10 +1,11 @@
-﻿namespace Battleship
+﻿using System;
+using WMPLib;
+using System.IO;
+
+class Program
 {
-    internal class Program
+    static void Main()
     {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Hello");
-        }
+        Console.WriteLine("Hello");
     }
 }
