@@ -45,5 +45,19 @@ namespace Battleship.src
             }
             throw new InvalidOperationException("No boat found. This should never happen!");
         }
+
+        public static void AttackRandom()
+        {
+            Random random = new Random();
+            int x = 0;
+            int y = 0;
+            do
+            {
+                x = random.Next(10);
+                y = random.Next(10);
+            }
+            while (Game.PlayerBoard[x, y] == 'S' || Game.PlayerBoard[x, y] == 'X');
+            Attack(x, y, false);
+        }
     }
 }
