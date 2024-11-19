@@ -1,6 +1,4 @@
 ﻿using System;
-using WMPLib;
-using System.IO;
 
 class Program
 {
