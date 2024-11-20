@@ -1,9 +1,15 @@
-﻿using System;
+﻿using Battleship.src;
+using System;
 
 class Program
 {
     static void Main()
     {
-        Console.WriteLine("Hello");
+        bool endGame = false;
+        do
+        {
+            ConsoleInteractions.AskPlayOrQuit(ref endGame);
+        }
+        while (endGame == false);
     }
 }

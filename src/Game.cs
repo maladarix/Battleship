@@ -13,7 +13,7 @@ namespace Battleship.src
         public static Boat[] PlayerBoats = new Boat[5];
         public static Boat[] BotBoats = new Boat[5];
 
-        public static void Boat()
+        public static void InitBoat()
         {
             string[] BoatName = { "Carrier", "Batleship", "Destroyer", "Submarine", "Patrolboat" };
             int[] BoatLength = {5, 4, 3, 3, 2};
@@ -25,11 +25,11 @@ namespace Battleship.src
             }
         }
 
-        public static void initBoard()
+        public static void InitBoard()
         {
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i <= 9; i++)
             {
-                for (int j = 0; j < 9; j++)
+                for (int j = 0; j <= 9; j++)
                 {
                     PlayerBoard[i, j] = '.';
                     BotBoard[i, j] = '.';
@@ -39,9 +39,12 @@ namespace Battleship.src
         }
         public static void ShowBoard(bool Player)
         {
-            for (int i = 0; i < 9; i++)
+            Console.WriteLine("  1 2 3 4 5 6 7 8 9 10");
+            Char[] letterList = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
+            for (int i = 0; i <= 9; i++)
             {
-                for (int j = 0; j < 9; j++)
+                Console.Write(letterList[i] + " ");
+                for (int j = 0; j <= 9; j++)
                 {
                     if (Player)
                     {

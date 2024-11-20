@@ -57,5 +57,16 @@ namespace Battleship.src
             }
             return true;
         }
+        public static bool VOrH(char input)
+        {
+            if (char.ToUpper(input) == 'V' || char.ToUpper(input) == 'H')
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
