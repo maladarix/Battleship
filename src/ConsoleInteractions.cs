@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +25,8 @@ namespace Battleship.src
                 case "1":
                     Game.InitBoat();
                     Game.InitBoard();
-
+                    
+                    AskBoatPlacement();
                     break;
 
                 case "2":
@@ -37,24 +39,29 @@ namespace Battleship.src
             Game.ShowBoard(true);
             for (int i = 0; i < Game.PlayerBoats.Length; i++)
             {
-                char boatDirection;
-                do
+                string boatDirection;
+                bool vertical = false;
+                string x;
+                string userInput;
                 {
                     Console.WriteLine($"You have to place the {Game.PlayerBoats[i].Name} with a length of {Game.PlayerBoats[i].Length}");
                     do
                     {
                         Console.WriteLine("Do you want your boat to be placed vertically or horizontally? (Type V or H)");
-                        boatDirection = Convert.ToChar(Console.ReadLine());
-                    } while (Verification.VOrH(boatDirection));
+                        boatDirection = Console.ReadLine();
+                    } while (!Verification.VOrH(boatDirection, ref vertical));
 
                     do
                     {
-                    Console.WriteLine("Enter the coordinates that correspond to the top-left corner of the boat (Exemple: A1)");
-                    String userInput = Console.ReadLine();
-                    }
-                    string x = userInput.Substring(0,1);
-                    int y = Convert.ToInt16(userInput.Substring(1));
-                }while()
+                        Console.WriteLine("Enter the coordinates that correspond to the top-left corner of the boat (Exemple: A1)");
+                        userInput = Console.ReadLine();
+
+                        x = userInput.Substring(0, 1).ToUpper();
+                          
+                        
+                    } while (!Verification.Coord(x, userInput.Substring(1), out int letterNum, out int y) || !boatLogic.CheckBoatPlacementInGrid(letterNum, y, vertical, Game.PlayerBoats[i].Length) || !boatLogic.CheckBoatPlacementConflict(letterNum, y, vertical, Game.PlayerBoats[i].Length));
+
+                }
             }
 
 
