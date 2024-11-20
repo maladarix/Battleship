@@ -19,13 +19,13 @@ namespace Battleship.src
             {
                 if(vertical)
                 {
-                    board[x, y + i] = 'S';
+                    board[y + i, x] = 'S';
                     boats[boatNum].LastX = x;
                     boats[boatNum].LastY = y + boatLenght;
                 }
                 else
                 {
-                    board[x + i, y] = 'S';
+                    board[y, x + i] = 'S';
                     boats[boatNum].LastX = x + boatLenght;
                     boats[boatNum].LastY = y;
                 }
@@ -35,7 +35,7 @@ namespace Battleship.src
 
         public static bool CheckBoatPlacementInGrid(int x, int y, bool vertical, int boatLenght)
         {
-            if((vertical ? y + boatLenght : x + boatLenght) < 9)
+            if((vertical ? y + boatLenght : x + boatLenght) <= 10)
             {
                 return true;
             }
@@ -48,10 +48,10 @@ namespace Battleship.src
 
         public static bool CheckBoatPlacementConflict(int x, int y, bool vertical, int boatLenght)
         {
-            for (int i = (vertical ? y : x); i <= (vertical ? y : x) + boatLenght; i++)
+            for (int i = (vertical ? y : x); i < (vertical ? y : x) + boatLenght; i++)
             {
-                int row = vertical ? x : i;
-                int col = vertical ? i : y;
+                int col = vertical ? x : i;
+                int row = vertical ? i : y;
 
                 if (Game.PlayerBoard[row, col] != '.')
                 {

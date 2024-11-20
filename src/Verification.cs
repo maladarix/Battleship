@@ -22,21 +22,21 @@ namespace Battleship.src
             }
         }
         //verification of the input of coordinates
-        public static bool Coord(string x, string yString, out int letterNum, out int outY)
+        public static bool Coord(string xString, string yString, out int x, out int y)
         {
-            outY = -1; 
-            letterNum = -1;
-            int y;
-            if (int.TryParse(yString, out int number))
-            {
-                y = number;
-                outY = number;
-                if (x.Length == 1 && char.IsLetter(x[0]))
-                {
-                    char letter = Convert.ToChar(x);
-                    letterNum = (int)letter - 65;
+            x = -1; 
+            y = -1;
 
-                    if (letterNum < 10 && letterNum >= 0 && y < 10 && y >= 0)
+            if (int.TryParse(xString, out int number))
+            {
+                x = number - 1;
+                x = number - 1;
+                if (yString.Length == 1 && char.IsLetter(yString[0]))
+                {
+                    char letter = Convert.ToChar(yString);
+                    y = (int)letter - 65;
+
+                    if (y < 10 && y >= 0 && x < 10 && x >= 0)
                     {
                         return true;
                     }
