@@ -59,6 +59,66 @@ namespace Battleship.src
             }
           
         }
+
+        public static void ShowBotBoard()
+        {
+            Console.WriteLine("  1 2 3 4 5 6 7 8 9 10");
+            Char[] letterList = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
+            for (int i = 0; i <= 9; i++)
+            {
+                Console.Write(letterList[i] + " ");
+                for (int j = 0; j <= 9; j++)
+                {
+                    Console.Write($"{BotBoard[i, j]} ");
+                }
+                Console.WriteLine();
+            }
+
+        }
+
+        public static void Play()
+        {
+            do
+            {
+                ConsoleInteractions.AskAttack();
+                //ConsoleInteractions.BotAttack();
+
+            }
+            while (ArePlayerBoatsAlive() && AreBotBoatsAlive());
+
+            if(ArePlayerBoatsAlive())
+            {
+                Console.WriteLine("You have won! GG");
+            }
+            else
+            {
+                Console.WriteLine("Get gud the bot has won");
+            }
+        }
+
+        public static bool ArePlayerBoatsAlive()
+        {
+            foreach (var boat in PlayerBoats)
+            {
+                if(boat.Hp > 0)
+                {
+                    return true;
+                }  
+            }
+            return false;
+        }
+
+        public static bool AreBotBoatsAlive()
+        {
+            foreach (var boat in BotBoats)
+            {
+                if (boat.Hp > 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
 }

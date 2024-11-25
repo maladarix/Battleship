@@ -11,7 +11,7 @@ namespace Battleship.src
             string audioPath = Path.Combine(basePath, "..", "..", "..", "src", "audio", "miss.mp3");
             var board = playerTurn ? Game.BotBoard : Game.PlayerBoard;
 
-            if (board[x, y] == 'S')
+            if (board[y, x] == 'S')
             {
                 Boat boat = GetBoat(x, y, playerTurn);
                 boat.Hp--;
@@ -25,12 +25,30 @@ namespace Battleship.src
                     audioPath = Path.Combine(basePath, "..", "..", "..", "src", "audio", "hit.mp3");
                     Console.WriteLine("Hit !");
                 }
+
+                if(playerTurn)
+                {
+                    Game.HiddenBoard[y, x] = 'H';
+                }
+                else
+                {
+                    board[y, x] = 'H';
+                }
             }
             else
             {
+                if (playerTurn)
+                {
+                    Game.HiddenBoard[y, x] = 'X';
+                }
+                else
+                {
+                    board[y, x] = 'X';
+                }
+
                 Console.WriteLine("Missed !");
             }
-            player.URL = audioPath;
+            player.URL = Path.GetFullPath(audioPath);
             player.controls.play();
         }
 

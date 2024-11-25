@@ -49,17 +49,17 @@ namespace Battleship.src
         {
             if (PlayerTurn)
             {
-                if (Game.PlayerBoard[x, y] == 'X')
+                if (Game.BotBoard[x, y] == 'X')
                 {
                     Console.WriteLine("You've already attacked that coordinate");
-                    return false;
+                    return true;
                 }
             }
-            else if (Game.BotBoard[x, y] == 'X')
+            else if (Game.PlayerBoard[x, y] == 'X')
             {
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
         public static bool VOrH(string input, ref bool vertical)
         {

@@ -25,8 +25,9 @@ namespace Battleship.src
                 case "1":
                     Game.InitBoat();
                     Game.InitBoard();
-                    
+                    boatLogic.PlaceRandomBoat();
                     AskBoatPlacement();
+                    Game.Play();
                     break;
 
                 case "2":
@@ -64,8 +65,55 @@ namespace Battleship.src
                 Console.Clear();
                 Game.ShowBoard(true);
             }
+        }
 
+        public static void AskAttack()
+        {
+            Console.Clear();
+            Game.ShowBoard(false);
+            Console.WriteLine("=================");
+            Game.ShowBoard(true);
 
+            string userInput;
+            bool exitLoop = false;
+            int x = -1;
+            int y = -1;
+            do
+            {
+                Console.WriteLine("Enter a coordinate that you want to attack (Exemple:A1)");
+                userInput = Console.ReadLine();
+
+                if(Verification.Coord(userInput.Substring(1).ToUpper(), userInput.Substring(0, 1).ToUpper(), out x, out y))
+                {
+                    if (!Verification.AlreadyHit(x, y, true))
+                    {
+                        exitLoop = true;
+                    }
+                }
+
+            } while ( exitLoop == false );
+            attackLogic.Attack(x, y, true);
+        }
+
+        public static void BotAttack()
+        {
+            Random rnd = new Random();
+            int x = rnd.Next(10);
+            int y = rnd.Next(10) + 65;
+            bool exitLoop = false;
+
+            do
+            {
+                if (Verification.Coord(x.ToString(), ((char)y).ToString(), out x, out y))
+                {
+                    if(Verification.AlreadyHit(x, y, false))
+                    {
+                        exitLoop = true;
+                    }
+                }
+            }
+            while (exitLoop);
+            attackLogic.Attack(x, y, false);
         }
     }
 }
