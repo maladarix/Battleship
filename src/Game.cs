@@ -80,8 +80,22 @@ namespace Battleship.src
         {
             do
             {
+                Console.Clear();
+                Game.ShowBoard(false);
+                Console.WriteLine("=================");
+                Game.ShowBoard(true);
                 ConsoleInteractions.AskAttack();
-                //ConsoleInteractions.BotAttack();
+                Console.Clear();
+                Game.ShowBoard(false);
+                Console.WriteLine("=================");
+                Game.ShowBoard(true);
+                System.Threading.Thread.Sleep(2000);
+                Console.Clear();
+                ConsoleInteractions.BotAttack();
+                Game.ShowBoard(false);
+                Console.WriteLine("=================");
+                Game.ShowBoard(true);
+                System.Threading.Thread.Sleep(2000);
 
             }
             while (ArePlayerBoatsAlive() && AreBotBoatsAlive());

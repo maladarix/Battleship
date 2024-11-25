@@ -30,7 +30,6 @@ namespace Battleship.src
             if (int.TryParse(xString, out int number))
             {
                 x = number - 1;
-                x = number - 1;
                 if (yString.Length == 1 && char.IsLetter(yString[0]))
                 {
                     char letter = Convert.ToChar(yString);
@@ -49,13 +48,13 @@ namespace Battleship.src
         {
             if (PlayerTurn)
             {
-                if (Game.BotBoard[x, y] == 'X')
+                if (Game.BotBoard[y, x] == 'X')
                 {
                     Console.WriteLine("You've already attacked that coordinate");
                     return true;
                 }
             }
-            else if (Game.PlayerBoard[x, y] == 'X')
+            else if (Game.PlayerBoard[y, x] == 'X')
             {
                 return true;
             }

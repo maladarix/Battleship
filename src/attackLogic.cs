@@ -30,10 +30,8 @@ namespace Battleship.src
                 {
                     Game.HiddenBoard[y, x] = 'H';
                 }
-                else
-                {
-                    board[y, x] = 'H';
-                }
+                board[y, x] = 'H';
+
             }
             else
             {
@@ -41,10 +39,7 @@ namespace Battleship.src
                 {
                     Game.HiddenBoard[y, x] = 'X';
                 }
-                else
-                {
-                    board[y, x] = 'X';
-                }
+                board[y, x] = 'X';
 
                 Console.WriteLine("Missed !");
             }

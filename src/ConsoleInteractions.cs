@@ -69,11 +69,6 @@ namespace Battleship.src
 
         public static void AskAttack()
         {
-            Console.Clear();
-            Game.ShowBoard(false);
-            Console.WriteLine("=================");
-            Game.ShowBoard(true);
-
             string userInput;
             bool exitLoop = false;
             int x = -1;
@@ -98,21 +93,23 @@ namespace Battleship.src
         public static void BotAttack()
         {
             Random rnd = new Random();
-            int x = rnd.Next(10);
-            int y = rnd.Next(10) + 65;
+            int x = -1;
+            int y = -1;
             bool exitLoop = false;
 
             do
             {
-                if (Verification.Coord(x.ToString(), ((char)y).ToString(), out x, out y))
+                x = rnd.Next(10);
+                y = rnd.Next(10) + 65;
+                if (Verification.Coord(x.ToString(), ((char)y).ToString().ToUpper(), out x, out y))
                 {
-                    if(Verification.AlreadyHit(x, y, false))
+                    if(!Verification.AlreadyHit(x, y, false))
                     {
                         exitLoop = true;
                     }
                 }
             }
-            while (exitLoop);
+            while (exitLoop == false);
             attackLogic.Attack(x, y, false);
         }
     }
