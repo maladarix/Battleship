@@ -18,7 +18,7 @@ namespace Battleship.src
                 Console.WriteLine("2-Quit");
                 playerInput = Console.ReadLine();
 
-            } while (!Verification.PlayOrQuit(playerInput));
+            } while (!Verification.OneOrTwo(playerInput));
 
             switch(playerInput)
             {
@@ -26,12 +26,36 @@ namespace Battleship.src
                     Game.InitBoat();
                     Game.InitBoard();
                     boatLogic.PlaceRandomBoat();
-                    AskBoatPlacement();
+                    AskRandomPlacement();
                     Game.Play();
                     break;
 
                 case "2":
                     endGame = true;
+                    break;
+            }
+        }
+        
+        public static void AskRandomPlacement()
+        {
+            String playerInput;
+            Console.WriteLine("Do you want to place your boats manually or randomly?");
+            do
+            {
+                Console.WriteLine("1-Manual");
+                Console.WriteLine("2-Random");
+                playerInput = Console.ReadLine();
+
+            } while (!Verification.OneOrTwo(playerInput));
+
+            switch (playerInput)
+            {
+                case "1":
+                    AskBoatPlacement();
+                    break;
+
+                case "2":
+                    boatLogic.PlaceRandomBoat(true);
                     break;
             }
         }
@@ -61,7 +85,7 @@ namespace Battleship.src
 
                 } while (userInput == "" || !Verification.Coord(userInput.Substring(0, 1).ToUpper(), userInput.Substring(1).ToUpper(), out x, out y) || !boatLogic.CheckBoatPlacementInGrid(x, y, vertical, Game.PlayerBoats[i].Length) || !boatLogic.CheckBoatPlacementConflict(x, y, vertical, Game.PlayerBoats[i].Length));
 
-                boatLogic.PlaceBoat(x, y, vertical, Game.PlayerBoats[i].Length, i, false);
+                boatLogic.PlaceBoat(x, y, vertical, Game.PlayerBoats[i].Length, i, true);
                 Console.Clear();
                 Game.ShowBoard(true);
             }
@@ -88,29 +112,6 @@ namespace Battleship.src
 
             } while ( exitLoop == false );
             attackLogic.Attack(x, y, true);
-        }
-
-        public static void BotAttack()
-        {
-            Random rnd = new Random();
-            int x = -1;
-            int y = -1;
-            bool exitLoop = false;
-
-            do
-            {
-                x = rnd.Next(10) + 65;
-                y = rnd.Next(10);
-                if (Verification.Coord(((char)x).ToString().ToUpper(), y.ToString(), out x, out y))
-                {
-                    if(!Verification.AlreadyHit(x, y, false))
-                    {
-                        exitLoop = true;
-                    }
-                }
-            }
-            while (exitLoop == false);
-            attackLogic.Attack(x, y, false);
         }
     }
 }

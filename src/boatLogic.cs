@@ -8,10 +8,10 @@ namespace Battleship.src
 {
     internal class boatLogic
     {
-        public static void PlaceBoat(int x, int y, bool vertical, int boatLenght, int boatNum, bool bot = false)
+        public static void PlaceBoat(int x, int y, bool vertical, int boatLenght, int boatNum, bool player = false)
         {
-            var boats = bot ? Game.BotBoats : Game.PlayerBoats;
-            var board = bot ? Game.BotBoard : Game.PlayerBoard;
+            var boats = player ? Game.PlayerBoats : Game.BotBoats;
+            var board = player ? Game.PlayerBoard : Game.BotBoard;
 
             boats[boatNum].FirstX = x;
             boats[boatNum].FirstY = y;
@@ -33,7 +33,7 @@ namespace Battleship.src
             
         }
 
-        public static bool CheckBoatPlacementInGrid(int x, int y, bool vertical, int boatLenght, bool bot = false)
+        public static bool CheckBoatPlacementInGrid(int x, int y, bool vertical, int boatLenght, bool player = false)
         {
             if((vertical ? y + boatLenght : x + boatLenght) <= 10)
             {
@@ -41,7 +41,7 @@ namespace Battleship.src
             }
             else
             {
-                if(!bot)
+                if(player)
                 {
                     Console.WriteLine("The ship placement is out of bound");
                 } 
@@ -49,20 +49,13 @@ namespace Battleship.src
             }
         }
 
-        public static bool CheckBoatPlacementConflict(int x, int y, bool vertical, int boatLenght, bool bot = false)
+        public static bool CheckBoatPlacementConflict(int x, int y, bool vertical, int boatLenght, bool player = false)
         {
             for (int i = (vertical ? y : x); i < (vertical ? y : x) + boatLenght; i++)
             {
                 int col = vertical ? x : i;
                 int row = vertical ? i : y;
-                if(bot)
-                {
-                    if (Game.BotBoard[row, col] != '.')
-                    {
-                        return false;
-                    }
-                }
-                else
+                if(player)
                 {
                     if (Game.PlayerBoard[row, col] != '.')
                     {
@@ -70,12 +63,20 @@ namespace Battleship.src
                         return false;
                     }
                 }
+                else
+                {
+                    if (Game.BotBoard[row, col] != '.')
+                    {
+                        return false;
+                    }
+                }
             }
             return true;
         }
 
-        public static void PlaceRandomBoat()
+        public static void PlaceRandomBoat(bool player = false)
         {
+
             for (int i = 0; i < Game.BotBoats.Length; i++)
             {
                 Random random = new Random();
@@ -88,16 +89,16 @@ namespace Battleship.src
                     x = random.Next(10);
                     y = random.Next(10);
                     vertical = random.Next(2) == 1 ? true : false;
-                    if(CheckBoatPlacementInGrid(x, y, vertical, Game.BotBoats[i].Length, true) == true)
+                    if (CheckBoatPlacementInGrid(x, y, vertical, player ? Game.PlayerBoats[i].Length : Game.BotBoats[i].Length, player) == true)
                     {
-                        if(CheckBoatPlacementConflict(x, y, vertical, Game.BotBoats[i].Length,  true))
+                        if(CheckBoatPlacementConflict(x, y, vertical, player ? Game.PlayerBoats[i].Length : Game.BotBoats[i].Length,  player))
                         {
                             exitLoop = true;
                         }
                     }
                 }
                 while (exitLoop == false);
-                PlaceBoat(x, y, vertical, Game.BotBoats[i].Length, i, true);
+                PlaceBoat(x, y, vertical, player ? Game.PlayerBoats[i].Length : Game.BotBoats[i].Length, i, player);
             }
         }
 

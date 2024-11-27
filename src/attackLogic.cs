@@ -20,6 +20,11 @@ namespace Battleship.src
                 {
                     Game.HiddenBoard[y, x] = 'x';
                 }
+                else
+                {
+                    Game.LastBotHitX = x;
+                    Game.LastBotHitY = y;
+                }
                 board[y, x] = 'x';
 
                 Game.ShowGame();
@@ -27,6 +32,12 @@ namespace Battleship.src
                 if (boat.Hp <= 0)
                 {
                     Console.WriteLine($"The {boat.Name} is sunk !");
+                    
+                    if (!playerTurn)
+                    {
+                        Game.LastBotHitX = -1;
+                        Game.LastBotHitY = -1;
+                    }
                 }
                 else
                 {
@@ -62,18 +73,34 @@ namespace Battleship.src
 
             throw new InvalidOperationException("No boat found. This should never happen!");
         }
-
-        public static void AttackRandom()
+        public static void BotAttack()
         {
-            Random random = new Random();
-            int x = 0;
-            int y = 0;
+            Random rnd = new Random();
+            int x = -1;
+            int y = -1;
+            bool exitLoop = false;
+
+           
             do
             {
-                x = random.Next(10);
-                y = random.Next(10);
+                if (!(Game.LastBotHitX == -1 && Game.LastBotHitY == -1))
+                {
+                    rnd
+                }
+                else
+                {
+                    x = rnd.Next(10) + 65;
+                    y = rnd.Next(10);
+                }
+                if (Verification.Coord(((char)x).ToString().ToUpper(), y.ToString(), out x, out y))
+                {
+                    if (!Verification.AlreadyHit(x, y, false))
+                    {
+                        exitLoop = true;
+                    }
+                }
             }
-            while (Game.PlayerBoard[x, y] == 'S' || Game.PlayerBoard[x, y] == 'X');
+            while (exitLoop == false);
             Attack(x, y, false);
         }
     }

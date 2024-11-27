@@ -9,7 +9,7 @@ namespace Battleship.src
     internal class Verification
     {
         //Verification of the play or quit input
-        public static bool PlayOrQuit(string input)
+        public static bool OneOrTwo(string input)
         {
             if (input == "1" || input == "2")
             {
