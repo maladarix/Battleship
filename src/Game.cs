@@ -39,68 +39,70 @@ namespace Battleship.src
         }
         public static void ShowBoard(bool Player)
         {
-            Console.WriteLine("  1 2 3 4 5 6 7 8 9 10");
-            Char[] letterList = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
+            if (Player)
+            {
+                Console.WriteLine("   A B C D E F G H I J");
+
+            }
+
             for (int i = 0; i <= 9; i++)
             {
-                Console.Write(letterList[i] + " ");
+                Console.Write($"{(i + 1).ToString().PadLeft(2)} ");
                 for (int j = 0; j <= 9; j++)
                 {
                     if (Player)
                     {
+                        if(PlayerBoard[i, j] == 'H')
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                        }
+                        else if(PlayerBoard[i, j] == 'X')
+                        {
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                        }
                         Console.Write($"{PlayerBoard[i, j]} ");
                     }
                     else
                     {
+                        if (HiddenBoard[i, j] == 'H')
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                        }
+                        else if (HiddenBoard[i, j] == 'X')
+                        {
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                        }
                         Console.Write($"{HiddenBoard[i, j]} ");  
                     }
+                    Console.ResetColor();
                 }
                 Console.WriteLine();
             }
           
         }
 
-        public static void ShowBotBoard()
+        public static void ShowGame()
         {
-            Console.WriteLine("  1 2 3 4 5 6 7 8 9 10");
-            Char[] letterList = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
-            for (int i = 0; i <= 9; i++)
-            {
-                Console.Write(letterList[i] + " ");
-                for (int j = 0; j <= 9; j++)
-                {
-                    Console.Write($"{BotBoard[i, j]} ");
-                }
-                Console.WriteLine();
-            }
-
+            Console.Clear();
+            Console.WriteLine("Computer");
+            ShowBoard(false);
+            ShowBoard(true);
+            Console.WriteLine("You");
         }
 
         public static void Play()
         {
             do
             {
-                Console.Clear();
-                Game.ShowBoard(false);
-                Console.WriteLine("=================");
-                Game.ShowBoard(true);
+                ShowGame();
                 ConsoleInteractions.AskAttack();
-                Console.Clear();
-                Game.ShowBoard(false);
-                Console.WriteLine("=================");
-                Game.ShowBoard(true);
-                System.Threading.Thread.Sleep(2000);
-                Console.Clear();
+                System.Threading.Thread.Sleep(4000);
                 ConsoleInteractions.BotAttack();
-                Game.ShowBoard(false);
-                Console.WriteLine("=================");
-                Game.ShowBoard(true);
-                System.Threading.Thread.Sleep(2000);
-
+                System.Threading.Thread.Sleep(4000);
             }
-            while (ArePlayerBoatsAlive() && AreBotBoatsAlive());
+            while (boatLogic.ArePlayerBoatsAlive() && boatLogic.AreBotBoatsAlive());
 
-            if(ArePlayerBoatsAlive())
+            if(boatLogic.ArePlayerBoatsAlive())
             {
                 Console.WriteLine("You have won! GG");
             }
@@ -109,32 +111,6 @@ namespace Battleship.src
                 Console.WriteLine("Get gud the bot has won");
             }
         }
-
-        public static bool ArePlayerBoatsAlive()
-        {
-            foreach (var boat in PlayerBoats)
-            {
-                if(boat.Hp > 0)
-                {
-                    return true;
-                }  
-            }
-            return false;
-        }
-
-        public static bool AreBotBoatsAlive()
-        {
-            foreach (var boat in BotBoats)
-            {
-                if (boat.Hp > 0)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
     }
 
 }
-
-

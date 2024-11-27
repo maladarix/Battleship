@@ -27,13 +27,13 @@ namespace Battleship.src
             x = -1; 
             y = -1;
 
-            if (int.TryParse(xString, out int number))
+            if (int.TryParse(yString, out int number))
             {
-                x = number - 1;
-                if (yString.Length == 1 && char.IsLetter(yString[0]))
+                y = number - 1;
+                if (xString.Length == 1 && char.IsLetter(xString[0]))
                 {
-                    char letter = Convert.ToChar(yString);
-                    y = (int)letter - 65;
+                    char letter = Convert.ToChar(xString);
+                    x = (int)letter - 65;
 
                     if (y < 10 && y >= 0 && x < 10 && x >= 0)
                     {

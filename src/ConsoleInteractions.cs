@@ -59,7 +59,7 @@ namespace Battleship.src
                     Console.WriteLine("Enter the coordinates that correspond to the top-left corner of the boat (Exemple: A1)");
                     userInput = Console.ReadLine();
 
-                } while (!Verification.Coord(userInput.Substring(1).ToUpper(), userInput.Substring(0, 1).ToUpper(), out x, out y) || !boatLogic.CheckBoatPlacementInGrid(x, y, vertical, Game.PlayerBoats[i].Length) || !boatLogic.CheckBoatPlacementConflict(x, y, vertical, Game.PlayerBoats[i].Length));
+                } while (!Verification.Coord(userInput.Substring(0, 1).ToUpper(), userInput.Substring(1).ToUpper(), out x, out y) || !boatLogic.CheckBoatPlacementInGrid(x, y, vertical, Game.PlayerBoats[i].Length) || !boatLogic.CheckBoatPlacementConflict(x, y, vertical, Game.PlayerBoats[i].Length));
 
                 boatLogic.PlaceBoat(x, y, vertical, Game.PlayerBoats[i].Length, i, false);
                 Console.Clear();
@@ -78,7 +78,7 @@ namespace Battleship.src
                 Console.WriteLine("Enter a coordinate that you want to attack (Exemple:A1)");
                 userInput = Console.ReadLine();
 
-                if(Verification.Coord(userInput.Substring(1).ToUpper(), userInput.Substring(0, 1).ToUpper(), out x, out y))
+                if(Verification.Coord(userInput.Substring(0, 1).ToUpper(), userInput.Substring(1).ToUpper() , out x, out y))
                 {
                     if (!Verification.AlreadyHit(x, y, true))
                     {
@@ -99,9 +99,9 @@ namespace Battleship.src
 
             do
             {
-                x = rnd.Next(10);
-                y = rnd.Next(10) + 65;
-                if (Verification.Coord(x.ToString(), ((char)y).ToString().ToUpper(), out x, out y))
+                x = rnd.Next(10) + 65;
+                y = rnd.Next(10);
+                if (Verification.Coord(((char)x).ToString().ToUpper(), y.ToString(), out x, out y))
                 {
                     if(!Verification.AlreadyHit(x, y, false))
                     {

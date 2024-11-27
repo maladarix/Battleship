@@ -100,5 +100,29 @@ namespace Battleship.src
                 PlaceBoat(x, y, vertical, Game.BotBoats[i].Length, i, true);
             }
         }
+
+        public static bool ArePlayerBoatsAlive()
+        {
+            foreach (var boat in Game.PlayerBoats)
+            {
+                if (boat.Hp > 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool AreBotBoatsAlive()
+        {
+            foreach (var boat in Game.BotBoats)
+            {
+                if (boat.Hp > 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }
