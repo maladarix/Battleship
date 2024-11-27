@@ -18,9 +18,9 @@ namespace Battleship.src
 
                 if(playerTurn)
                 {
-                    Game.HiddenBoard[y, x] = 'H';
+                    Game.HiddenBoard[y, x] = 'x';
                 }
-                board[y, x] = 'H';
+                board[y, x] = 'x';
 
                 Game.ShowGame();
 

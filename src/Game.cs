@@ -52,7 +52,7 @@ namespace Battleship.src
                 {
                     if (Player)
                     {
-                        if(PlayerBoard[i, j] == 'H')
+                        if(PlayerBoard[i, j] == 'x')
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
                         }
@@ -60,11 +60,11 @@ namespace Battleship.src
                         {
                             Console.ForegroundColor = ConsoleColor.Blue;
                         }
-                        Console.Write($"{PlayerBoard[i, j]} ");
+                        Console.Write(($"{PlayerBoard[i, j]} ").ToUpper());
                     }
                     else
                     {
-                        if (HiddenBoard[i, j] == 'H')
+                        if (HiddenBoard[i, j] == 'x')
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
                         }
@@ -72,7 +72,7 @@ namespace Battleship.src
                         {
                             Console.ForegroundColor = ConsoleColor.Blue;
                         }
-                        Console.Write($"{HiddenBoard[i, j]} ");  
+                        Console.Write(($"{HiddenBoard[i, j]} ").ToUpper());
                     }
                     Console.ResetColor();
                 }
@@ -84,10 +84,10 @@ namespace Battleship.src
         public static void ShowGame()
         {
             Console.Clear();
-            Console.WriteLine("Computer");
+            Console.WriteLine("        Computer");
             ShowBoard(false);
             ShowBoard(true);
-            Console.WriteLine("You");
+            Console.WriteLine("          You");
         }
 
         public static void Play()
@@ -96,11 +96,19 @@ namespace Battleship.src
             {
                 ShowGame();
                 ConsoleInteractions.AskAttack();
-                System.Threading.Thread.Sleep(4000);
+                if(!boatLogic.AreBotBoatsAlive())
+                {
+                    break;
+                }
+                System.Threading.Thread.Sleep(3000);
                 ConsoleInteractions.BotAttack();
-                System.Threading.Thread.Sleep(4000);
+                if (!boatLogic.ArePlayerBoatsAlive())
+                {
+                    break;
+                }
+                System.Threading.Thread.Sleep(3000);
             }
-            while (boatLogic.ArePlayerBoatsAlive() && boatLogic.AreBotBoatsAlive());
+            while (true);
 
             if(boatLogic.ArePlayerBoatsAlive())
             {

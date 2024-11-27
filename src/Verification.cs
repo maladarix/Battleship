@@ -48,13 +48,13 @@ namespace Battleship.src
         {
             if (PlayerTurn)
             {
-                if (Game.BotBoard[y, x] == 'X')
+                if ((Game.BotBoard[y, x]).ToString().ToUpper() == "X")
                 {
                     Console.WriteLine("You've already attacked that coordinate");
                     return true;
                 }
             }
-            else if (Game.PlayerBoard[y, x] == 'X')
+            else if ((Game.PlayerBoard[y, x]).ToString().ToUpper() == "X")
             {
                 return true;
             }
