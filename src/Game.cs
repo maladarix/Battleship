@@ -12,8 +12,11 @@ namespace Battleship.src
         public static char[,] HiddenBoard = new char[10, 10];
         public static Boat[] PlayerBoats = new Boat[5];
         public static Boat[] BotBoats = new Boat[5];
+        public static int FirstBotHitX = -1;
+        public static int FirstBotHitY = -1;
         public static int LastBotHitX = -1;
         public static int LastBotHitY = -1;
+        public static int BoatDirection = -1;
 
         public static void InitBoat()
         {

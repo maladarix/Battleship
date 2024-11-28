@@ -4,6 +4,8 @@ namespace Battleship.src
 {
     internal class attackLogic
     {
+        private static readonly Random rnd = new Random();
+
         public static void Attack(int x, int y, bool playerTurn)
         {
             WindowsMediaPlayer player = new WindowsMediaPlayer();
@@ -22,6 +24,16 @@ namespace Battleship.src
                 }
                 else
                 {
+                    if(Game.LastBotHitX == -1 && Game.LastBotHitY == -1)
+                    {
+                        Game.FirstBotHitX = x;
+                        Game.FirstBotHitY = y;
+                    }
+                    else
+                    {
+                        if (x != Game.LastBotHitX) Game.BoatDirection = 1;
+                        else if (y != Game.LastBotHitY) Game.BoatDirection = 2;
+                    }
                     Game.LastBotHitX = x;
                     Game.LastBotHitY = y;
                 }
@@ -35,6 +47,9 @@ namespace Battleship.src
                     
                     if (!playerTurn)
                     {
+                        Game.BoatDirection = -1;
+                        Game.FirstBotHitX = -1;
+                        Game.FirstBotHitY = -1;
                         Game.LastBotHitX = -1;
                         Game.LastBotHitY = -1;
                     }
@@ -75,33 +90,82 @@ namespace Battleship.src
         }
         public static void BotAttack()
         {
-            Random rnd = new Random();
             int x = -1;
             int y = -1;
-            bool exitLoop = false;
-
-           
-            do
+            if(Game.LastBotHitX == -1 && Game.LastBotHitY == -1)
             {
-                if (!(Game.LastBotHitX == -1 && Game.LastBotHitY == -1))
+                RandomCoords(out x, out y);
+            }
+            else
+            {
+                if(Game.BoatDirection == -1)
                 {
-                    rnd
+                    Side4Coords(out x, out y);
                 }
                 else
                 {
-                    x = rnd.Next(10) + 65;
-                    y = rnd.Next(10);
-                }
-                if (Verification.Coord(((char)x).ToString().ToUpper(), y.ToString(), out x, out y))
-                {
-                    if (!Verification.AlreadyHit(x, y, false))
-                    {
-                        exitLoop = true;
-                    }
+                    DirectionCoord(out x, out y);
                 }
             }
-            while (exitLoop == false);
+
             Attack(x, y, false);
+        }
+
+        public static void RandomCoords(out int x, out int y)
+        {
+            x = -1;
+            y = -1;
+            do
+            {
+                x = rnd.Next(10);
+                y = rnd.Next(10);
+            }
+            while (Verification.AlreadyHit(x, y, false));
+        }
+
+        public static void Side4Coords(out int x, out int y)
+        {
+            x = -1;
+            y = -1;
+
+            for (int i = 0; i < 4; i++)
+            {
+                x = Game.LastBotHitX + (i == 0 ? 1 : (i == 1 ? -1 : 0));
+                y = Game.LastBotHitY + (i == 2 ? 1 : (i == 3 ? -1 : 0));
+
+                if (y <= 9 && x <= 9 && y >= 0 && x >= 0 && !Verification.AlreadyHit(x, y, false))
+                {
+                    return;
+                }
+            }
+        }
+
+
+        public static void DirectionCoord(out int x, out int y)
+        {
+            x = -1;
+            y = -1;
+
+            int nextX = Game.LastBotHitX, nextY = Game.LastBotHitY;
+
+            if (Game.BoatDirection == 1) // Horizontal
+            {
+                nextX = (Game.LastBotHitX + 1 <= 9 && !Verification.AlreadyHit(Game.LastBotHitX + 1, Game.LastBotHitY, false))
+                    ? Game.LastBotHitX + 1
+                    : Game.LastBotHitX - 1;
+            }
+            else if (Game.BoatDirection == 2) // Vertical
+            {
+                nextY = (Game.LastBotHitY + 1 <= 9 && !Verification.AlreadyHit(Game.LastBotHitX, Game.LastBotHitY + 1, false))
+                    ? Game.LastBotHitY + 1
+                    : Game.LastBotHitY - 1;
+            }
+
+            if (nextX >= 0 && nextX <= 9 && !Verification.AlreadyHit(nextX, nextY, false))
+            {
+                x = nextX;
+                y = nextY;
+            }
         }
     }
 }
