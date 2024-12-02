@@ -90,29 +90,76 @@ namespace Battleship.src
         }
         public static void BotAttack()
         {
+            switch(Game.Difficulty)
+            {
+                case 1:
+                    EasyAttack();
+                    break;
+
+                case 2:
+                    MediumAttack();
+                    break;
+
+                case 3: 
+                    HardAttack();
+                    break;
+            }
+        }
+
+        public static void EasyAttack()
+        {
             int x = -1;
             int y = -1;
-            if(Game.LastBotHitX == -1 && Game.LastBotHitY == -1)
+            RandomCoords(out x, out y);
+            Attack(x, y, false);
+        }
+
+        public static void MediumAttack()
+        {
+
+            int x = -1;
+            int y = -1;
+            if (Game.LastBotHitX == -1 && Game.LastBotHitY == -1)
             {
                 RandomCoords(out x, out y);
             }
             else
             {
-                if(Game.BoatDirection == -1)
-                {
-                    Side4Coords(out x, out y);
-                }
-                else
-                {
-                    DirectionCoord(out x, out y);
-                    if(x == -1 && y == -1)
-                    {
-                        RandomCoords(out x, out y);
-                    }
-                }
+                TargetAttack(out x, out y);
             }
 
             Attack(x, y, false);
+        }
+
+        public static void HardAttack()
+        {
+            int x = -1;
+            int y = -1;
+            if (Game.LastBotHitX == -1 && Game.LastBotHitY == -1)
+            {
+                MostProbableCoord(out x, out y);
+            }
+            else
+            {
+                TargetAttack(out x, out y);
+            }
+            Attack(x, y, false);
+        }
+
+        public static void TargetAttack(out int x, out int y)
+        {
+            if (Game.BoatDirection == -1)
+            {
+                Side4Coords(out x, out y);
+            }
+            else
+            {
+                DirectionCoord(out x, out y);
+                if (x == -1 && y == -1)
+                {
+                    RandomCoords(out x, out y);
+                }
+            }
         }
 
         public static void RandomCoords(out int x, out int y)
@@ -234,6 +281,66 @@ namespace Battleship.src
 
             x = nextX;
             y = nextY;
+        }
+
+        public static void MostProbableCoord(out int x, out int y)
+        {
+            int[,] ProbaBoard = new int[10, 10];
+
+            for (int orientation = 0; orientation < 2; orientation++)
+            {
+                foreach (var boat in Game.PlayerBoats)
+                {
+                    if (boat.Hp > 0)
+                    {
+                        for (int row = 0; row < ProbaBoard.GetLength(0); row++)
+                        {
+                            for (int col = 0; col < ProbaBoard.GetLength(1); col++)
+                            {
+                                bool canPlace = true;
+
+                                for (int offset = 0; offset < boat.Length; offset++)
+                                {
+                                    if ((orientation == 0 && col + offset >= 10) || (orientation == 1 && row + offset >= 10) || Game.PlayerBoard[row + (orientation == 1 ? offset : 0), col + (orientation == 0 ? offset : 0)].ToString().ToUpper() == "X")
+                                    {
+                                        canPlace = false;
+                                        break;
+                                    }
+                                }
+
+                                if (canPlace)
+                                {
+                                    for (int offset = 0; offset < boat.Length; offset++)
+                                    {
+                                        int markRow = orientation == 1 ? row + offset : row;
+                                        int markCol = orientation == 0 ? col + offset : col;
+                                        ProbaBoard[markRow, markCol]++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            int maxProbability = 0;
+            x = 0;
+            y = 0;
+
+            for (int row = 0; row < ProbaBoard.GetLength(0); row++)
+            {
+                for (int col = 0; col < ProbaBoard.GetLength(1); col++)
+                {
+                    Console.Write($"{ProbaBoard[row, col],3}");
+                    if (ProbaBoard[row, col] > maxProbability && !Verification.AlreadyHit(col, row, false))
+                    {
+                        maxProbability = ProbaBoard[row, col];
+                        x = col;
+                        y = row;
+                    }
+                }
+                Console.WriteLine();
+            }
         }
     }
 }

@@ -17,6 +17,7 @@ namespace Battleship.src
         public static int LastBotHitX = -1;
         public static int LastBotHitY = -1;
         public static int BoatDirection = -1;
+        public static int Difficulty = 0;
 
         public static void InitBoat()
         {

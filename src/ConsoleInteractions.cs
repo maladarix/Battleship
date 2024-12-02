@@ -26,6 +26,7 @@ namespace Battleship.src
                     Game.InitBoat();
                     Game.InitBoard();
                     boatLogic.PlaceRandomBoat();
+                    AskDifficulty();
                     AskRandomPlacement();
                     Game.Play();
                     break;
@@ -112,6 +113,42 @@ namespace Battleship.src
 
             } while ( exitLoop == false );
             attackLogic.Attack(x, y, true);
+        }
+
+        public static void AskDifficulty()
+        {
+            String playerInput;
+            bool exitLoop = false;
+            Console.WriteLine("1-Easy");
+            Console.WriteLine("2-Normal");
+            Console.WriteLine("3-Hard");
+            do
+            {
+                Console.WriteLine("Choose the difficulty");
+                playerInput = Console.ReadLine();
+                switch (playerInput)
+                {
+                    case "1":
+                        Game.Difficulty = 1;
+                        exitLoop = true;
+                        break;
+
+                    case "2":
+                        Game.Difficulty = 2;
+                        exitLoop = true;
+                        break;
+
+                    case "3":
+                        Game.Difficulty = 3;
+                        exitLoop = true;
+                        break;
+
+                    default:
+                        exitLoop = false;
+                        break;
+                }
+
+            } while (exitLoop == false);
         }
     }
 }
