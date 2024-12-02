@@ -105,6 +105,10 @@ namespace Battleship.src
                 else
                 {
                     DirectionCoord(out x, out y);
+                    if(x == -1 && y == -1)
+                    {
+                        RandomCoords(out x, out y);
+                    }
                 }
             }
 
@@ -146,26 +150,90 @@ namespace Battleship.src
             x = -1;
             y = -1;
 
-            int nextX = Game.LastBotHitX, nextY = Game.LastBotHitY;
+            int nextX = Game.LastBotHitX;
+            int nextY = Game.LastBotHitY;
 
             if (Game.BoatDirection == 1) // Horizontal
             {
-                nextX = (Game.LastBotHitX + 1 <= 9 && !Verification.AlreadyHit(Game.LastBotHitX + 1, Game.LastBotHitY, false))
-                    ? Game.LastBotHitX + 1
-                    : Game.LastBotHitX - 1;
+                if(Game.FirstBotHitX - Game.LastBotHitX < 0) //if direction == right
+                {
+                    if (Game.LastBotHitX + 1 <= 9 && !Verification.AlreadyHit(Game.LastBotHitX + 1, Game.LastBotHitY, false))
+                    {
+                        nextX = Game.LastBotHitX + 1;
+                    }
+                    else
+                    {
+                        if(Game.FirstBotHitX - 1 >= 0 && !Verification.AlreadyHit(Game.FirstBotHitX - 1, Game.FirstBotHitY, false))
+                        {
+                            nextX = Game.FirstBotHitX - 1;
+
+                        }
+                    }
+                }
+                else //if direction == left
+                {
+                    if (Game.LastBotHitX - 1 >= 0 && !Verification.AlreadyHit(Game.LastBotHitX - 1, Game.LastBotHitY, false))
+                    {
+                        nextX = Game.LastBotHitX - 1;
+                    }
+                    else
+                    {
+                        if (Game.FirstBotHitX + 1 <= 9 && !Verification.AlreadyHit(Game.FirstBotHitX + 1, Game.FirstBotHitY, false))
+                        {
+                            nextX = Game.FirstBotHitX + 1;
+
+                        }
+                    }
+                }
+
+                if(nextX == Game.LastBotHitX)
+                {
+                    Game.BoatDirection = -1;
+                    Side4Coords(out x, out y);
+                }
             }
             else if (Game.BoatDirection == 2) // Vertical
             {
-                nextY = (Game.LastBotHitY + 1 <= 9 && !Verification.AlreadyHit(Game.LastBotHitX, Game.LastBotHitY + 1, false))
-                    ? Game.LastBotHitY + 1
-                    : Game.LastBotHitY - 1;
+                if (Game.FirstBotHitY - Game.LastBotHitY < 0) //if direction == down
+                {
+                    if (Game.LastBotHitY + 1 <= 9 && !Verification.AlreadyHit(Game.LastBotHitX, Game.LastBotHitY + 1, false))
+                    {
+                        nextY = Game.LastBotHitY + 1;
+                    }
+                    else
+                    {
+                        if (Game.FirstBotHitX - 1 >= 0 && !Verification.AlreadyHit(Game.FirstBotHitX, Game.FirstBotHitY - 1, false))
+                        {
+                            nextY = Game.FirstBotHitY - 1;
+
+                        }
+                    }
+                }
+                else //if direction == up
+                {
+                    if (Game.LastBotHitX - 1 >= 0 && !Verification.AlreadyHit(Game.LastBotHitX, Game.LastBotHitY - 1, false))
+                    {
+                        nextY = Game.LastBotHitY - 1;
+                    }
+                    else
+                    {
+                        if (Game.FirstBotHitX + 1 <= 9 && !Verification.AlreadyHit(Game.FirstBotHitX, Game.FirstBotHitY + 1, false))
+                        {
+                            nextY = Game.FirstBotHitY + 1;
+
+                        }
+                    }
+                }
+
+                if (nextY == Game.LastBotHitY)
+                {
+                    Game.BoatDirection = -1;
+                    Side4Coords(out x, out y);
+                }
             }
 
-            if (nextX >= 0 && nextX <= 9 && !Verification.AlreadyHit(nextX, nextY, false))
-            {
-                x = nextX;
-                y = nextY;
-            }
+            x = nextX;
+            y = nextY;
         }
     }
 }

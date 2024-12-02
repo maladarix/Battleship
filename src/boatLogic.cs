@@ -21,12 +21,12 @@ namespace Battleship.src
                 {
                     board[y + i, x] = 'S';
                     boats[boatNum].LastX = x;
-                    boats[boatNum].LastY = y + boatLenght;
+                    boats[boatNum].LastY = y + boatLenght - 1;
                 }
                 else
                 {
                     board[y, x + i] = 'S';
-                    boats[boatNum].LastX = x + boatLenght;
+                    boats[boatNum].LastX = x + boatLenght - 1;
                     boats[boatNum].LastY = y;
                 }
             }
