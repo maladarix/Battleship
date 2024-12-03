@@ -102,12 +102,14 @@ namespace Battleship.src
             {
                 Console.WriteLine("Enter a coordinate that you want to attack (Exemple:A1)");
                 userInput = Console.ReadLine();
-
-                if(Verification.Coord(userInput.Substring(0, 1).ToUpper(), userInput.Substring(1).ToUpper() , out x, out y))
+                if(userInput != "")
                 {
-                    if (!Verification.AlreadyHit(x, y, true))
+                    if(Verification.Coord(userInput.Substring(0, 1).ToUpper(), userInput.Substring(1).ToUpper() , out x, out y))
                     {
-                        exitLoop = true;
+                        if (!Verification.AlreadyHit(x, y, true))
+                        {
+                            exitLoop = true;
+                        }
                     }
                 }
 

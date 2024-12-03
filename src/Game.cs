@@ -58,7 +58,7 @@ namespace Battleship.src
                 {
                     if (Player)
                     {
-                        if(PlayerBoard[i, j] == 'x')
+                        if(PlayerBoard[i, j] == 'x' || PlayerBoard[i, j] == 'd')
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
                         }
@@ -70,7 +70,7 @@ namespace Battleship.src
                     }
                     else
                     {
-                        if (HiddenBoard[i, j] == 'x')
+                        if (HiddenBoard[i, j] == 'x' || HiddenBoard[i, j] == 'd')
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
                         }
