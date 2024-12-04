@@ -8,10 +8,10 @@ namespace Battleship.src
 {
     internal class boatLogic
     {
-        public static void PlaceBoat(int x, int y, bool vertical, int boatLenght, int boatNum, bool bot = false)
+        public static void PlaceBoat(int x, int y, bool vertical, int boatLenght, int boatNum, bool player = false)
         {
-            var boats = bot ? Game.BotBoats : Game.PlayerBoats;
-            var board = bot ? Game.BotBoard : Game.PlayerBoard;
+            var boats = player ? Game.PlayerBoats : Game.BotBoats;
+            var board = player ? Game.PlayerBoard : Game.BotBoard;
 
             boats[boatNum].FirstX = x;
             boats[boatNum].FirstY = y;
@@ -19,66 +19,111 @@ namespace Battleship.src
             {
                 if(vertical)
                 {
-                    board[x, y + i] = 'S';
+                    board[y + i, x] = 'S';
                     boats[boatNum].LastX = x;
-                    boats[boatNum].LastY = y + boatLenght;
+                    boats[boatNum].LastY = y + boatLenght - 1;
                 }
                 else
                 {
-                    board[x + i, y] = 'S';
-                    boats[boatNum].LastX = x + boatLenght;
+                    board[y, x + i] = 'S';
+                    boats[boatNum].LastX = x + boatLenght - 1;
                     boats[boatNum].LastY = y;
                 }
             }
             
         }
 
-        public static bool CheckBoatPlacementInGrid(int x, int y, bool vertical, int boatLenght)
+        public static bool CheckBoatPlacementInGrid(int x, int y, bool vertical, int boatLenght, bool player = false)
         {
-            if((vertical ? y + boatLenght : x + boatLenght) < 9)
+            if((vertical ? y + boatLenght : x + boatLenght) <= 10)
             {
                 return true;
             }
             else
             {
-                Console.WriteLine("The ship placement is out of bound");
+                if(player)
+                {
+                    Console.WriteLine("The ship placement is out of bound");
+                } 
                 return false;
             }
         }
 
-        public static bool CheckBoatPlacementConflict(int x, int y, bool vertical, int boatLenght)
+        public static bool CheckBoatPlacementConflict(int x, int y, bool vertical, int boatLenght, bool player = false)
         {
-            for (int i = (vertical ? y : x); i <= (vertical ? y : x) + boatLenght; i++)
+            for (int i = (vertical ? y : x); i < (vertical ? y : x) + boatLenght; i++)
             {
-                int row = vertical ? x : i;
-                int col = vertical ? i : y;
-
-                if (Game.PlayerBoard[row, col] != '.')
+                int col = vertical ? x : i;
+                int row = vertical ? i : y;
+                if(player)
                 {
-                    Console.WriteLine("The ship is in conflict with another ship");
-                    return false;
+                    if (Game.PlayerBoard[row, col] != '.')
+                    {
+                        Console.WriteLine("The ship is in conflict with another ship");
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (Game.BotBoard[row, col] != '.')
+                    {
+                        return false;
+                    }
                 }
             }
             return true;
         }
 
-        public static void PlaceRandomBoat()
+        public static void PlaceRandomBoat(bool player = false)
         {
+
             for (int i = 0; i < Game.BotBoats.Length; i++)
             {
                 Random random = new Random();
                 int x = 0;
                 int y = 0;
                 bool vertical = false;
+                bool exitLoop = false;
                 do
                 {
                     x = random.Next(10);
                     y = random.Next(10);
                     vertical = random.Next(2) == 1 ? true : false;
+                    if (CheckBoatPlacementInGrid(x, y, vertical, player ? Game.PlayerBoats[i].Length : Game.BotBoats[i].Length, player) == true)
+                    {
+                        if(CheckBoatPlacementConflict(x, y, vertical, player ? Game.PlayerBoats[i].Length : Game.BotBoats[i].Length,  player))
+                        {
+                            exitLoop = true;
+                        }
+                    }
                 }
-                while (CheckBoatPlacementInGrid(x, y, vertical, Game.BotBoats[i].Length) && CheckBoatPlacementConflict(x, y, vertical, Game.BotBoats[i].Length));
-                PlaceBoat(x, y, vertical, Game.BotBoats[i].Length, i, true);
+                while (exitLoop == false);
+                PlaceBoat(x, y, vertical, player ? Game.PlayerBoats[i].Length : Game.BotBoats[i].Length, i, player);
             }
+        }
+
+        public static bool ArePlayerBoatsAlive()
+        {
+            foreach (var boat in Game.PlayerBoats)
+            {
+                if (boat.Hp > 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool AreBotBoatsAlive()
+        {
+            foreach (var boat in Game.BotBoats)
+            {
+                if (boat.Hp > 0)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
