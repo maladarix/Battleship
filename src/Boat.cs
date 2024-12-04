@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace Battleship.src
 {
+    /* Structure des bateaux, elle permet d'initialiser les variables 
+     nécéssaires à la création de tous les bateaux. */
     public struct Boat
     {
         public string Name;
@@ -16,6 +18,7 @@ namespace Battleship.src
         public int LastY = -1;
         public int Hp;
 
+        //Déclaration des variables des composantes d'un bateau
         public Boat(string BoatName, int BoatLegnth)
         {
             Name = BoatName;
