@@ -84,7 +84,11 @@ namespace Battleship.src
                     Console.WriteLine("Enter the coordinates that correspond to the top-left corner of the boat (Exemple: A1)");
                     userInput = Console.ReadLine();
 
-                } while (userInput == "" || !Verification.Coord(userInput.Substring(0, 1).ToUpper(), userInput.Substring(1).ToUpper(), out x, out y) || !boatLogic.CheckBoatPlacementInGrid(x, y, vertical, Game.PlayerBoats[i].Length) || !boatLogic.CheckBoatPlacementConflict(x, y, vertical, Game.PlayerBoats[i].Length));
+                } while (userInput == "" || 
+                    !Verification.Coord(userInput.Substring(0, 1).ToUpper(), userInput.Substring(1).ToUpper(), out x, out y) || 
+                    !boatLogic.CheckBoatPlacementInGrid(x, y, vertical, Game.PlayerBoats[i].Length) || 
+                    boatLogic.CheckBoatPlacementConflict(x, y, vertical, Game.PlayerBoats[i].Length, true)
+                );
 
                 boatLogic.PlaceBoat(x, y, vertical, Game.PlayerBoats[i].Length, i, true);
                 Console.Clear();
