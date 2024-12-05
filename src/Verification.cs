@@ -44,6 +44,7 @@ namespace Battleship.src
             Console.WriteLine("Invalid Input");
             return false;
         }
+        //verification if the coord has already been hit
         public static bool AlreadyHit(int x, int y, bool PlayerTurn)
         {
             if (PlayerTurn)
@@ -60,6 +61,7 @@ namespace Battleship.src
             }
             return false;
         }
+        //Check if player chose vertical or horizontal
         public static bool VOrH(string input, ref bool vertical)
         {
             if (input.ToUpper() == "V" || input.ToUpper() == "H")
