@@ -9,6 +9,7 @@ namespace Battleship.src
 {
     internal class ConsoleInteractions
     {
+        //First menu
         public static void AskPlayOrQuit(ref bool endGame)
         {
             String playerInput;
