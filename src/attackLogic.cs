@@ -11,10 +11,18 @@ namespace Battleship.src
             string audioPath = Path.Combine(basePath, "..", "..", "..", "src", "audio", "miss.mp3");
             var board = playerTurn ? Game.BotBoard : Game.PlayerBoard;
 
-            if (board[x, y] == 'S')
+            if (board[y, x] == 'S')
             {
-                Boat boat = GetBoat(x, y, playerTurn);
-                boat.Hp--;
+                audioPath = Path.Combine(basePath, "..", "..", "..", "src", "audio", "hit.mp3");
+                Boat boat = HitBoat(x, y, playerTurn);
+
+                if(playerTurn)
+                {
+                    Game.HiddenBoard[y, x] = 'H';
+                }
+                board[y, x] = 'H';
+
+                Game.ShowGame();
 
                 if (boat.Hp <= 0)
                 {
@@ -22,27 +30,36 @@ namespace Battleship.src
                 }
                 else
                 {
-                    audioPath = Path.Combine(basePath, "..", "..", "..", "src", "audio", "hit.mp3");
                     Console.WriteLine("Hit !");
                 }
             }
             else
             {
+                if (playerTurn)
+                {
+                    Game.HiddenBoard[y, x] = 'X';
+                }
+                board[y, x] = 'X';
+
+                Game.ShowGame();
                 Console.WriteLine("Missed !");
             }
-            player.URL = audioPath;
+            player.URL = Path.GetFullPath(audioPath);
             player.controls.play();
         }
 
-        public static Boat GetBoat(int x, int y, bool playerTurn)
+        public static Boat HitBoat(int x, int y, bool playerTurn)
         {
             var boats = playerTurn ? Game.BotBoats : Game.PlayerBoats;
-            foreach (Boat boat in boats)
+            for (int i = 0; i < boats.Length; i++)
             {
-                if (x >= boat.FirstX && x <= boat.LastX && y >= boat.FirstY && y <= boat.LastY) {
-                    return boat;
+                if (x >= boats[i].FirstX && x <= boats[i].LastX && y >= boats[i].FirstY && y <= boats[i].LastY)
+                {
+                    boats[i].Hp--;
+                    return boats[i];
                 }
             }
+
             throw new InvalidOperationException("No boat found. This should never happen!");
         }
 

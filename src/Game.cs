@@ -39,28 +39,78 @@ namespace Battleship.src
         }
         public static void ShowBoard(bool Player)
         {
-            Console.WriteLine("  1 2 3 4 5 6 7 8 9 10");
-            Char[] letterList = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
+            if (Player)
+            {
+                Console.WriteLine("   A B C D E F G H I J");
+
+            }
+
             for (int i = 0; i <= 9; i++)
             {
-                Console.Write(letterList[i] + " ");
+                Console.Write($"{(i + 1).ToString().PadLeft(2)} ");
                 for (int j = 0; j <= 9; j++)
                 {
                     if (Player)
                     {
+                        if(PlayerBoard[i, j] == 'H')
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                        }
+                        else if(PlayerBoard[i, j] == 'X')
+                        {
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                        }
                         Console.Write($"{PlayerBoard[i, j]} ");
                     }
                     else
                     {
+                        if (HiddenBoard[i, j] == 'H')
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                        }
+                        else if (HiddenBoard[i, j] == 'X')
+                        {
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                        }
                         Console.Write($"{HiddenBoard[i, j]} ");  
                     }
+                    Console.ResetColor();
                 }
                 Console.WriteLine();
             }
           
         }
+
+        public static void ShowGame()
+        {
+            Console.Clear();
+            Console.WriteLine("Computer");
+            ShowBoard(false);
+            ShowBoard(true);
+            Console.WriteLine("You");
+        }
+
+        public static void Play()
+        {
+            do
+            {
+                ShowGame();
+                ConsoleInteractions.AskAttack();
+                System.Threading.Thread.Sleep(4000);
+                ConsoleInteractions.BotAttack();
+                System.Threading.Thread.Sleep(4000);
+            }
+            while (boatLogic.ArePlayerBoatsAlive() && boatLogic.AreBotBoatsAlive());
+
+            if(boatLogic.ArePlayerBoatsAlive())
+            {
+                Console.WriteLine("You have won! GG");
+            }
+            else
+            {
+                Console.WriteLine("Get gud the bot has won");
+            }
+        }
     }
 
 }
-
-

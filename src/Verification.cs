@@ -22,22 +22,25 @@ namespace Battleship.src
             }
         }
         //verification of the input of coordinates
-        public static bool Coord(string x, int y, out int letterNum,out int yNum)
+        public static bool Coord(string xString, string yString, out int x, out int y)
         {
-            letterNum = -1;
-            yNum = -1;
+            x = -1; 
+            y = -1;
 
-            if (x.Length == 1 && char.IsLetter(x[0]))
+            if (int.TryParse(yString, out int number))
             {
-                char letter = Convert.ToChar(x);
-                letterNum = (int)letter - 65;
-
-                if (letterNum < 10 && letterNum >= 0 && y < 10 && y >= 0)
+                y = number - 1;
+                if (xString.Length == 1 && char.IsLetter(xString[0]))
                 {
-                    yNum = y;
-                    return true;
+                    char letter = Convert.ToChar(xString);
+                    x = (int)letter - 65;
+
+                    if (y < 10 && y >= 0 && x < 10 && x >= 0)
+                    {
+                        return true;
+                    }
                 }
-            }
+            }         
             Console.WriteLine("Invalid Input");
             return false;
         }
@@ -45,26 +48,35 @@ namespace Battleship.src
         {
             if (PlayerTurn)
             {
-                if (Game.PlayerBoard[x, y] == 'X')
+                if (Game.BotBoard[y, x] == 'X')
                 {
                     Console.WriteLine("You've already attacked that coordinate");
-                    return false;
+                    return true;
                 }
             }
-            else if (Game.BotBoard[x, y] == 'X')
+            else if (Game.PlayerBoard[y, x] == 'X')
             {
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
-        public static bool VOrH(char input)
+        public static bool VOrH(string input, ref bool vertical)
         {
-            if (char.ToUpper(input) == 'V' || char.ToUpper(input) == 'H')
+            if (input.ToUpper() == "V" || input.ToUpper() == "H")
             {
+                if (input.ToUpper() == "V")
+                {
+                    vertical = true;
+                }
+                else
+                {
+                    vertical = false;
+                }
                 return true;
             }
             else
             {
+                vertical = false;
                 return false;
             }
         }
